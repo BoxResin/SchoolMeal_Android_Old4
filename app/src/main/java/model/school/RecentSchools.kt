@@ -105,7 +105,7 @@ private object Database {
         cursor.close()
         db.close()
 
-        return result
+        return result.reversed() // 최근순으로 정렬
     }
 
     /** 데이터베이스에 [school] 레코드를 추가한다. */
