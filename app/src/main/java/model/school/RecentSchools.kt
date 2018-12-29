@@ -56,13 +56,16 @@ private const val COLUMN_NAME_NAME = "name"
 private const val COLUMN_NAME_ADDRESS = "address"
 private const val COLUMN_NAME_AREA = "area"
 
-private const val SQL_CREATE_TABLE = "CREATE TABLE $TABLE_NAME (" +
-    "${BaseColumns._ID} INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
-    "$COLUMN_NAME_CODE TEXT NOT NULL," +
-    "$COLUMN_NAME_COURSE_CODE TEXT NOT NULL," +
-    "$COLUMN_NAME_NAME TEXT NOT NULL," +
-    "$COLUMN_NAME_ADDRESS TEXT NOT NULL," +
-    "$COLUMN_NAME_AREA TEXT NOT NULL)"
+private const val SQL_CREATE_TABLE = """
+    CREATE TABLE $TABLE_NAME (
+        ${BaseColumns._ID} INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+        $COLUMN_NAME_CODE TEXT NOT NULL,
+        $COLUMN_NAME_COURSE_CODE TEXT NOT NULL,
+        $COLUMN_NAME_NAME TEXT NOT NULL,
+        $COLUMN_NAME_ADDRESS TEXT NOT NULL,
+        $COLUMN_NAME_AREA TEXT NOT NULL
+    )
+"""
 
 /** 최근 선택한 학교 데이터베이스 */
 private object Database {
@@ -111,20 +114,22 @@ private object Database {
     /** 데이터베이스에 [school] 레코드를 추가한다. */
     fun insert(school: School) {
         val db = dbHelper.writableDatabase
-        db.execSQL(
-            "INSERT INTO $TABLE_NAME (" +
-                "$COLUMN_NAME_CODE," +
-                "$COLUMN_NAME_COURSE_CODE," +
-                "$COLUMN_NAME_NAME," +
-                "$COLUMN_NAME_ADDRESS," +
-                "$COLUMN_NAME_AREA) " +
-                "VALUES (" +
-                "'${school.code.asString}'," +
-                "'${school.course.name}'," +
-                "'${school.name}'," +
-                "'${school.address}'," +
-                "'${school.area.name}')"
-        )
+        val sql = """
+            INSERT INTO $TABLE_NAME (
+                $COLUMN_NAME_CODE,
+                $COLUMN_NAME_COURSE_CODE,
+                $COLUMN_NAME_NAME,
+                $COLUMN_NAME_ADDRESS,
+                $COLUMN_NAME_AREA
+            ) VALUES (
+                '${school.code.asString}',
+                '${school.course.name}',
+                '${school.name}',
+                '${school.address}',
+                '${school.area.name}'
+            )
+        """
+        db.execSQL(sql)
         db.close()
     }
 
